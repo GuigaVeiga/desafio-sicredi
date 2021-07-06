@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -32,6 +36,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "SESSOES")
+@EntityListeners(AuditingEntityListener.class)
 public class Sessao {
 
      @Id
@@ -40,13 +45,13 @@ public class Sessao {
      private Long id;
 
      @NotNull
-     @Column(name = "TEMPO")
-     private Integer tempo;
+     @Column(name = "DURACAO")
+     private Long duracao;
 
-     @NotNull
+     @CreatedDate
      @Column(name = "ABERTURA")
-     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-     private LocalDateTime abertura = LocalDateTime.now();
+     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+     private LocalDateTime abertura;
 
      @NotNull
      @Column(name = "FECHAMENTO")
@@ -58,7 +63,7 @@ public class Sessao {
      private boolean ativo;
 
      @OneToOne(mappedBy = "sessao")
-     @JoinColumn(name = "PAUTA_ID")
+     @JoinColumn(name = "ID_PAUTA")
      private Pauta pauta;
 
      @OneToMany(mappedBy = "sessao", cascade = CascadeType.ALL)

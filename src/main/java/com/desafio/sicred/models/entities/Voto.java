@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -46,6 +46,12 @@ public class Voto {
      @JoinColumn(name = "ID_SESSAO", referencedColumnName="Id")
      private Sessao sessao;
 
-     @OneToMany(mappedBy = "voto", cascade = CascadeType.ALL)
-     private List<Associado> associados;
+     @ManyToOne(cascade = CascadeType.ALL)
+     @JoinColumn(name = "ID_PAUTA")
+     private Pauta pauta;
+
+     @OneToOne(cascade = CascadeType.ALL)
+     @JoinColumn(name = "ID_ASSOCIADO")
+     private Associado associado;
+
 }

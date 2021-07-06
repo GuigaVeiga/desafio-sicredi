@@ -49,8 +49,4 @@ public class Associado implements Serializable {
      @Column(name = "STATUS_VOTACAO")
      private StatusVotacao statusVotacao;
 
-     @ManyToOne
-     @JoinColumn(name = "VOTO_ID")
-     private Voto voto;
-
 }

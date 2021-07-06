@@ -19,6 +19,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.desafio.sicred.models.enums.StatusPauta;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -52,8 +54,11 @@ public class Pauta implements Serializable {
      @Column(name = "DESCRICAO")
      private String descricao;
 
+     @Column(name = "STATUS_PAUTA")
+     private StatusPauta statusPauta = StatusPauta.EM_ANALISE;
+
      @OneToOne(cascade = CascadeType.ALL)
-     @JoinColumn(name = "SESSAO_ID")
+     @JoinColumn(name = "SESSAO_ID", referencedColumnName = "id")
      private Sessao sessao;
 
      @CreatedDate
