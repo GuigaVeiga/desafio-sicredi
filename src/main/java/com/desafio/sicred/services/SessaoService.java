@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.desafio.sicred.converters.SessaoConverter;
 import com.desafio.sicred.converters.VotoConverter;
@@ -30,8 +32,8 @@ import com.desafio.sicred.models.entities.Pauta;
 import com.desafio.sicred.models.entities.Sessao;
 import com.desafio.sicred.models.entities.Voto;
 import com.desafio.sicred.models.enums.StatusPauta;
+import com.desafio.sicred.models.enums.StatusVotacao;
 import com.desafio.sicred.models.enums.TipoVoto;
-import com.desafio.sicred.models.request.PautaRequestModel;
 import com.desafio.sicred.models.request.SessaoRequestModel;
 import com.desafio.sicred.models.request.VotoRequestModel;
 import com.desafio.sicred.models.response.SessaoResponseModel;
@@ -40,6 +42,10 @@ import com.desafio.sicred.models.response.VotoResponseModel;
 import com.desafio.sicred.repositories.PautaRepository;
 import com.desafio.sicred.repositories.SessaoRepository;
 import com.desafio.sicred.repositories.VotoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -51,6 +57,7 @@ public class SessaoService {
      private static final String MSG_SESSAO_NAO_ENCONTRADO_PELO_ID = "Sessão não encontrada na base de dados. Confira se o id esta correto. ID: %s";
      private static final String MSG_ERROR_FECHAMENTO_SESSAO = "Data e Hora do fechamento da Sessão é menor que a Atual. Data Fechamento: %s";
      private static final String MSG_ERROR_SESSAO_VOTACAO = "Erro ao realizar votação. Confira se a sessão foi fechada ou se o associado já realizou o voto";
+     private static final String URI = "https://user-info.herokuapp.com/users/%s";
 
      private final SessaoRepository repository;
      private final VotoRepository votoRepository;
@@ -249,7 +256,9 @@ public class SessaoService {
                     .map(Voto::getAssociado)
                     .findFirst();
 
-          return  result.isPresent();
+          if (result.isPresent()) return true;
+
+          return getStatusVotarAssociadoPeloCpf(associado.getCpf()).equals(StatusVotacao.UNABLE_TO_VOTE.name());
      }
 
      public Integer calcularVotos(List<Voto> votos, TipoVoto tipoVoto , boolean isTotal) {
@@ -267,5 +276,29 @@ public class SessaoService {
 
      public StatusPauta resultadoPauta(Integer votosSim, Integer votosNao) {
           return votosSim > votosNao ? StatusPauta.APROVADA : StatusPauta.RECUSADA;
+     }
+
+     private String getStatusVotarAssociadoPeloCpf(String cpf)
+     {
+          try {
+               RestTemplate restTemplate = new RestTemplate();
+
+               ResponseEntity<String> response = restTemplate.getForEntity(format(URI, cpf), String.class);
+
+               ObjectMapper mapper = new ObjectMapper();
+
+               JsonNode root = mapper.readTree(response.getBody());
+               JsonNode status = root.path("status");
+
+               return status.asText();
+
+          } catch (JsonMappingException e) {
+               e.printStackTrace();
+               throw new FalhaAoRealizarVotacaoException(e);
+
+          } catch (JsonProcessingException e) {
+               e.printStackTrace();
+               throw new FalhaAoRealizarVotacaoException(e);
+          }
      }
 }

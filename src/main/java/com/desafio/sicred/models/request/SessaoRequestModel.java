@@ -21,7 +21,6 @@ public class SessaoRequestModel implements Serializable {
 
      private static final long serialVersionUID = 6422974960548370138L;
 
-     @NotNull(message = "Duração da sessão não pode ser nulo. ")
      @JsonProperty("duracao")
      private Long duracao;
 
@@ -38,7 +37,7 @@ public class SessaoRequestModel implements Serializable {
       *
       * @return duracao
       */
-     @ApiModelProperty(example = "1", required = true, value = "Tempo de duração da sessão. ")
+     @ApiModelProperty(example = "1", value = "Tempo de duração da sessão por minuto. Por padrão, é setado 1 min de sessão  ")
      public Long getDuracao() {
           return duracao;
      }

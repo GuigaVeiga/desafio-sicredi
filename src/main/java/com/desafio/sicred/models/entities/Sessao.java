@@ -44,7 +44,6 @@ public class Sessao {
      @Column(name = "ID")
      private Long id;
 
-     @NotNull
      @Column(name = "DURACAO")
      private Long duracao;
 
