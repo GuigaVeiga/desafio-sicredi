@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-EXPOSE 8082
+EXPOSE 8080
 RUN mkdir -p /app/
 RUN mkdir -p /app/logs/
 ADD target/sicred-*.jar /app/sicred.jar
