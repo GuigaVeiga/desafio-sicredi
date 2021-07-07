@@ -13,15 +13,19 @@ Criar uma solução back-end para gerenciar sessões de votação.
 ## Tecnologias Utilizadas
   - Java 1.8
   - Spring Boot
-  - Postgres
+  - Postgres (RDS AWS)
   - RabbitMQ
   - Swagger
   - Maven
+  - S3 (AWS)
+  - EC2 (AWS)
 
-## Como executar o projeto
-  - docker-compose up
+## Como executar o projeto local
+  - docker-compose up (Para subir o RabbitMQ)
+  - rodar o projeto
 
-## Sobre o projeto
+## Link do projeto
+  - http://ec2-34-219-22-208.us-west-2.compute.amazonaws.com:8080/swagger-ui.html#/
 
 ## Entidades
   - Associado
