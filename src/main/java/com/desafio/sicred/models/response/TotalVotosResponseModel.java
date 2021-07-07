@@ -1,9 +1,10 @@
 package com.desafio.sicred.models.response;
 
+import java.io.Serializable;
+
 import org.springframework.validation.annotation.Validated;
 
 import com.desafio.sicred.models.enums.StatusPauta;
-import com.desafio.sicred.models.enums.TipoVoto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class TotalVotosResponseModel {
+public class TotalVotosResponseModel implements Serializable {
 
      @JsonProperty("idPauta")
      private Long idPauta;

@@ -1,5 +1,6 @@
 package com.desafio.sicred.services;
 
+import static com.desafio.sicred.ConstantsApplication.FILA_RESULTADO_VOTACAO;
 import static java.lang.String.format;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.desafio.sicred.application.queue.RabbitMQService;
 import com.desafio.sicred.converters.SessaoConverter;
 import com.desafio.sicred.converters.VotoConverter;
 import com.desafio.sicred.exceptions.pauta.FalhaAoBuscarPautaException;
@@ -68,6 +70,7 @@ public class SessaoService {
 
      private final PautaService pautaService;
      private final AssociadoService associadoService;
+     private final RabbitMQService rabbitMQService;
 
 
 
@@ -114,7 +117,8 @@ public class SessaoService {
 
      }
 
-     public TotalVotosResponseModel buscarTotalVotosPorIdPauta(Long idPauta) throws FalhaAoBuscarPautaException {
+     @Transactional
+     public TotalVotosResponseModel contabilizarTotalVotosFechandoSessao(Long idPauta, Long idSessao) throws FalhaAoBuscarPautaException {
 
           try {
                Pauta pauta = pautaService.buscarPautaPorId(idPauta);
@@ -131,12 +135,30 @@ public class SessaoService {
                pauta.setStatusPauta(resultadoPauta(totalVotosSim, totalVotosNao));
                pautaRepository.save(pauta);
 
-               return votoConverter.toContabilzaVotosResponseModel(pauta, totalVotosSim, totalVotosNao, totalVotos);
+               TotalVotosResponseModel totalVotosResponseModel = votoConverter.toContabilzaVotosResponseModel(pauta, totalVotosSim, totalVotosNao, totalVotos);
+
+               this.fecharSessao(idSessao, totalVotosResponseModel);
+
+               return totalVotosResponseModel;
 
           } catch (Exception exception) {
                throw new FalhaAoRealizarVotacaoException(exception);
           }
 
+     }
+
+     @Transactional
+     public void fecharSessao(Long idSessao, TotalVotosResponseModel totalVotosResponseModel) throws FalhaAoBuscarSessaoException {
+
+          Sessao sessao = buscarSessaoPorId(idSessao);
+
+          if (!validarSessao(sessao)) {
+               sessao.setFechamento(LocalDateTime.now());
+               sessao.setAtivo(false);
+               repository.save(sessao);
+          }
+
+          rabbitMQService.send(FILA_RESULTADO_VOTACAO, totalVotosResponseModel);
      }
 
      @Transactional

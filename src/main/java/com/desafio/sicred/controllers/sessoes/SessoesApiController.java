@@ -81,9 +81,9 @@ public class SessoesApiController implements SessoesApi {
      }
 
      @Override
-     public ResponseEntity<TotalVotosResponseModel> buscarTotalVotosPorIdPauta(Long id) throws FalhaAoBuscarPautaException {
+     public ResponseEntity<TotalVotosResponseModel> contabilizarTotalVotosFechandoSessao(Long id, Long idSessao) throws FalhaAoBuscarPautaException {
 
-          TotalVotosResponseModel totalVotosResponseModel = service.buscarTotalVotosPorIdPauta(id);
+          TotalVotosResponseModel totalVotosResponseModel = service.contabilizarTotalVotosFechandoSessao(id, idSessao);
 
           if (nonNull(totalVotosResponseModel)) return ResponseEntity.ok(totalVotosResponseModel);
 

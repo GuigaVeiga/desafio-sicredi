@@ -89,14 +89,14 @@ public interface SessoesApi {
                consumes = {"application/json"})
      ResponseEntity<VotoResponseModel> votar (@ApiParam(value = "Dados necessários para votar. ", required = true) @Valid @RequestBody VotoRequestModel votoRequestModel);
 
-     @ApiOperation(value = "Votos Total da Pauta na sessão. ", nickname = "votosTotalSessao", notes = "Total de Votos em uma pauta na Sessão. ", response = TotalVotosResponseModel.class)
+     @ApiOperation(value = "Votos Total da Pauta na sessão e Fechar sessao. ", nickname = "votosTotalSessao", notes = "Total de Votos em uma pauta na Sessão. ", response = TotalVotosResponseModel.class)
      @ApiResponses(value = {
                @ApiResponse(code = 201, message = "Sucesso ao buscar dados. ", response = TotalVotosResponseModel.class),
                @ApiResponse(code = 400, message = "Dados não encontrados. "),
                @ApiResponse(code = 422, message = "Não foi possível buscar o total de votação. tente novamente mais tarde. ", response = ErrorResponseModel.class)})
-     @GetMapping(value = "/sessoes/votos/pauta/{id}",
+     @GetMapping(value = "/sessoes/{idPauta}/pauta/{id}/fechar-sessao",
                produces = {"application/json"})
-     ResponseEntity<TotalVotosResponseModel> buscarTotalVotosPorIdPauta (@ApiParam(value = "ID da pauta ser retornado o total de votos. ", required = true) @PathVariable("id") Long id) throws FalhaAoBuscarPautaException;
+     ResponseEntity<TotalVotosResponseModel> contabilizarTotalVotosFechandoSessao (@ApiParam(value = "ID da pauta ser retornado o total de votos. ", required = true) @PathVariable("id") Long id, Long idSessao) throws FalhaAoBuscarPautaException;
 
 
 }
