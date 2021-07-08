@@ -19,13 +19,15 @@ Criar uma solução back-end para gerenciar sessões de votação.
   - Maven
   - S3 (AWS)
   - EC2 (AWS)
+  - Docker
 
 ## Como executar o projeto local
   - docker-compose up (Para subir o RabbitMQ)
   - rodar o projeto
 
 ## Link do projeto
-  - http://ec2-34-219-22-208.us-west-2.compute.amazonaws.com:8080/swagger-ui.html#/
+  - Swagger: http://34.219.22.208:8080/swagger-ui.html#/
+  - RabbitMQ: http://34.219.22.208:15672/
 
 ## Entidades
   - Associado
