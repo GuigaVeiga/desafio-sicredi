@@ -110,7 +110,7 @@ public class AssociadoService {
 
      private void validarPropriedadesAssociadoParaInsercao(Associado associado) throws FalhaValidacaoAssociadoException {
 
-          if (isEmpty(associado.getNome()) && isEmpty(associado.getCpf()))
+          if (isEmpty(associado.getNome()) || isEmpty(associado.getCpf()))
                throw new FalhaValidacaoAssociadoException(MSG_ASSOCIADO_VAZIO);
      }
 

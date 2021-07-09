@@ -110,7 +110,7 @@ public class PautaService {
 
      private void validarPropriedadesPautaParaInsercao(Pauta pauta) throws FalhaValidacaoPautaException {
 
-          if (isEmpty(pauta.getTitulo()) && isEmpty(pauta.getDescricao()))
+          if (isEmpty(pauta.getTitulo()) || isEmpty(pauta.getDescricao()))
                throw new FalhaValidacaoPautaException(MSG_PAUTA_VAZIO);
      }
 
