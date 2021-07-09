@@ -22,8 +22,7 @@ Criar uma solução back-end para gerenciar sessões de votação.
   - Docker
 
 ## Como executar o projeto local
-  - docker-compose up (Para subir o RabbitMQ)
-  - rodar o projeto
+  - Só é necessário rodar o projeto, o Postgres e o RabbitMQ estão rodando em serviços cloud aws.
 
 ## Link do projeto
   - Swagger: http://34.219.22.208:8080/swagger-ui.html#/
