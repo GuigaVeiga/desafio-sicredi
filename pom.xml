@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.desafio</groupId>
-	<artifactId>sicred</artifactId>
+	<artifactId>sicredi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sicred</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Desafio Sicredi</name>
+	<description>Desafio Sicredi - Sistema de Votação</description>
 	<properties>
 		<java.version>1.8</java.version>
 		<springfox-version>2.9.2</springfox-version>
