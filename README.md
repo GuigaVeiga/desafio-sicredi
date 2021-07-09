@@ -1,4 +1,4 @@
-# Desafio-sicred
+# Desafio-sicredi
 
 ## Objetivo
 Criar uma solução back-end para gerenciar sessões de votação.
