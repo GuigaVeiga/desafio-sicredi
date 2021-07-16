@@ -21,13 +21,13 @@ Criar uma solução back-end para gerenciar sessões de votação.
   - EC2 (AWS)
   - Docker
 
-## Como executar o projeto local
+## Como executar o projeto local (Servidor e Banco Desativados)
   - Só é necessário rodar o projeto, o Postgres e o RabbitMQ estão rodando em serviços cloud aws.
 
 ## Link do projeto
-  - Swagger: http://34.219.22.208:8080/swagger-ui.html#/
-  - RabbitMQ: http://34.219.22.208:15672/
-
+  - Swagger: desativado
+  - RabbitMQ: desativado
+  
 ## Entidades
   - Associado
   - Pauta
